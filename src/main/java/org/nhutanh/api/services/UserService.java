@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 public class UserService {
 
@@ -32,6 +33,25 @@ public class UserService {
         }
         return false;
     }
+
+    public User getUserById(int id){
+        return this.userDao.getUserById(id);
+    }
+    public List<User> getAllUsers(){
+        return this.userDao.getAllUsers();
+    }
+    public void updateUser(User user){
+        this.userDao.updateUser(user);
+    }
+    public void deleteUser(int id){
+        this.userDao.deleteUser(id);
+    }
+    public User getUserByUsername(String username){
+        return this.userDao.getUserByUsername(username);
+    }
+
+
+
 
     public boolean registerUser(String username, String password) {
         User user = new User(username, bCryptPasswordEncoder.encode(password));

@@ -31,11 +31,11 @@ public class Api {
 
 //            studentService.addStudent(new Student("John Doe","099384411",19));
             studentService.getAllStudents().forEach(System.out::println);
-//            if (userService.login("trannhutanh@admin.com","trannhutanh")){
-//                System.out.println("Login Success");
-//            }else {
-//                System.out.println("Login Failed");
-//            }
+            if (userService.login("trannhutanh@admin.com","trannhutanh")){
+                System.out.println("Login Success");
+            }else {
+                System.out.println("Login Failed");
+            }
         }catch(Exception e){
             System.out.println(e);
         }

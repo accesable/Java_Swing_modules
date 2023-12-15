@@ -68,6 +68,13 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
+    public void updateCertificate(Certificate certificate){
+        this.certificateDao.updateCertificate(certificate);
+    }
+    public void deleteCertificate(Long id){
+        this.certificateDao.deleteCertificate(id);
+    }
+
     // Additional methods as required...
 }
 
