@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Student {
     private Long id;
 
@@ -16,4 +17,10 @@ public class Student {
     private String phoneNumber;
     private int age;
     private List<Certificate> certificates;
+
+    public Student(String fullName, String phoneNumber, int age) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.age = age;
+    }
 }

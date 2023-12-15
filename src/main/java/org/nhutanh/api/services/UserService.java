@@ -1,5 +1,6 @@
 package org.nhutanh.api.services;
 
+import org.nhutanh.api.dao.UserDao;
 import org.nhutanh.api.models.LoginHistory;
 import org.nhutanh.api.models.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -7,35 +8,42 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class UserService extends UserDaoImpl{
+public class UserService {
 
+    private final UserDao userDao; // Use interface rather than direct implementation
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final LoginHistoryService loginHistoryService;
 
-    private LoginHistoryService loginHistoryService;
-    public UserService(){
-        loginHistoryService = new LoginHistoryService();
+    // Constructor with dependency injection (can be achieved using Spring or manual wiring)
+    public UserService() {
+        this.userDao = new UserDaoImpl();
+        this.loginHistoryService = new LoginHistoryService();
     }
-    public boolean login(String username,String password){
-        User user = getUserByUsername(username);
+
+    public boolean login(String username, String password) {
+        User user = userDao.getUserByUsername(username); // Assuming this method exists in UserDao
 
         if (user != null && bCryptPasswordEncoder.matches(password, user.getPassword())) {
-            // User authentication successful, add login history
             LoginHistory loginHistory = new LoginHistory();
             loginHistory.setUser(user);
-            loginHistory.setLoginTime(new Date()); // Set the current time as login time
+            loginHistory.setLoginTime(new Date());
             loginHistoryService.addHistory(loginHistory);
             return true;
         }
         return false;
     }
 
-    public boolean registerUser(String username,String password){
-        User user = new User(username,bCryptPasswordEncoder.encode(password));
+    public boolean registerUser(String username, String password) {
+        User user = new User(username, bCryptPasswordEncoder.encode(password));
         try {
-            this.addUser(user);
-        }catch(RuntimeException e){
+            userDao.addUser(user);
+        } catch (RuntimeException e) { // Replace with a specific data access exception
+            // Log exception details here
             return false;
         }
         return true;
     }
+
+    // Additional methods...
 }
+
